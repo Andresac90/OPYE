@@ -3,6 +3,8 @@
 #include "OPYEProjectile.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Components/SphereComponent.h"
+#include "AddRadialImpulse.h"
+#include "GameFramework/Actor.h"
 
 AOPYEProjectile::AOPYEProjectile() 
 {
@@ -27,6 +29,8 @@ AOPYEProjectile::AOPYEProjectile()
 	ProjectileMovement->bRotationFollowsVelocity = true;
 	ProjectileMovement->bShouldBounce = true;
 
+	//UE_LOG(LogTemp, Log, TEXT("Actor location: %s"), *ProjectileMovement->GetActorLocation().ToString());
+
 	// Die after 3 seconds by default
 	InitialLifeSpan = 3.0f;
 }
@@ -36,7 +40,17 @@ void AOPYEProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UP
 	// Only add impulse and destroy projectile if we hit a physics
 	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr) && OtherComp->IsSimulatingPhysics())
 	{
-		OtherComp->AddImpulseAtLocation(GetVelocity() * 100.0f, GetActorLocation());
+		//OtherComp->AddImpulseAtLocation(GetVelocity() * 100.0f, GetActorLocation());
+
+		FVector SpawnLocation = GetActorLocation();
+		FRotator SpawnRotation = GetActorRotation();
+		FActorSpawnParameters SpawnInfo;
+
+		UE_LOG(LogTemp, Log, TEXT("Actor location: %s"), *SpawnLocation.ToString());
+
+		//GetWorld()->SpawnActor<AAddRadialImpulse>(SpawnLocation, SpawnRotation);
+		GetWorld()->SpawnActor<AAddRadialImpulse>(SpawnLocation, SpawnRotation, SpawnInfo);
+
 
 		Destroy();
 	}
