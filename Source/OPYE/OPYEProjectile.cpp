@@ -46,7 +46,7 @@ void AOPYEProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UP
 		FRotator SpawnRotation = GetActorRotation();
 		FActorSpawnParameters SpawnInfo;
 
-		UE_LOG(LogTemp, Log, TEXT("Actor location: %s"), *SpawnLocation.ToString());
+		UE_LOG(LogTemp, Log, TEXT("Projectile location OnHit: %s"), *SpawnLocation.ToString());
 
 		//GetWorld()->SpawnActor<AAddRadialImpulse>(SpawnLocation, SpawnRotation);
 		GetWorld()->SpawnActor<AAddRadialImpulse>(SpawnLocation, SpawnRotation, SpawnInfo);

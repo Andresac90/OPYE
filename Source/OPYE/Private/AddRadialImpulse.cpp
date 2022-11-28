@@ -29,7 +29,7 @@ void AAddRadialImpulse::BeginPlay()
 
 	DrawDebugSphere(GetWorld(), MyLocation, MyColSphere.GetSphereRadius(), 50, FColor::Cyan, true);
 
-	UE_LOG(LogTemp, Log, TEXT("Actor location: %s"), *MyLocation.ToString());
+	UE_LOG(LogTemp, Log, TEXT("AddImpulse Actor location BeginPlay: %s"), *MyLocation.ToString());
 
 	bool isHit = GetWorld()->SweepMultiByChannel(OutHits, MyLocation, MyLocation, FQuat::Identity, ECC_WorldStatic, MyColSphere);
 
