@@ -18,14 +18,13 @@ AAddRadialImpulse::AAddRadialImpulse()
 void AAddRadialImpulse::BeginPlay()
 {
 	Super::BeginPlay();
-
-	//SetActorLocation(FVector(1000, 1000, 50));
 	
+	float impulseRadius = 250.f;
+	float impulseForce = 1000.f;
+
 	TArray<FHitResult> OutHits;
-
 	FVector ImpulseLocation = GetActorLocation();
-
-	FCollisionShape MyColSphere = FCollisionShape::MakeSphere(500.f);
+	FCollisionShape MyColSphere = FCollisionShape::MakeSphere(impulseRadius);
 
 	DrawDebugSphere(GetWorld(), ImpulseLocation, MyColSphere.GetSphereRadius(), 50, FColor::Cyan, true);
 
@@ -44,19 +43,21 @@ void AAddRadialImpulse::BeginPlay()
 
 			if (MeshComp)
 			{
-				MeshComp->AddRadialImpulse(ImpulseLocation, 1000.f, 3000.f, ERadialImpulseFalloff::RIF_Constant, true);
+				MeshComp->AddRadialImpulse(ImpulseLocation, impulseRadius, impulseForce, ERadialImpulseFalloff::RIF_Constant, true);
 			}
 			
 			if (CharComp)
 			{
+				//Currently launch force is equal to "scale", regardless of distance from impulse origin.
+				//TODO: make launch froce origin distance dependent
+
 				FVector CharLocation = CharComp->GetActorLocation();
 				FVector LaunchDirection = CharLocation - ImpulseLocation;
-				float mag = 0;
-				LaunchDirection.ToDirectionAndLength(LaunchDirection, mag);
-				LaunchDirection = LaunchDirection * 1000;
+				float distance; //Player distance from impulse origin, not used currently.
+				float scale = impulseForce;
+				LaunchDirection.ToDirectionAndLength(LaunchDirection, distance);
+				LaunchDirection = LaunchDirection * scale;
 
-				UE_LOG(LogClass, Log, TEXT("Impulse Direction vector: %s"), *(LaunchDirection.ToString()));
-				
 				CharComp->LaunchCharacter(LaunchDirection, false, true);
 			}
 		}
