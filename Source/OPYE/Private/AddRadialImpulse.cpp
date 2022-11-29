@@ -23,33 +23,41 @@ void AAddRadialImpulse::BeginPlay()
 	
 	TArray<FHitResult> OutHits;
 
-	FVector MyLocation = GetActorLocation();
+	FVector ImpulseLocation = GetActorLocation();
 
 	FCollisionShape MyColSphere = FCollisionShape::MakeSphere(500.f);
 
-	DrawDebugSphere(GetWorld(), MyLocation, MyColSphere.GetSphereRadius(), 50, FColor::Cyan, true);
+	DrawDebugSphere(GetWorld(), ImpulseLocation, MyColSphere.GetSphereRadius(), 50, FColor::Cyan, true);
 
-	UE_LOG(LogTemp, Log, TEXT("AddImpulse Actor location BeginPlay: %s"), *MyLocation.ToString());
+	UE_LOG(LogTemp, Log, TEXT("AddImpulse Actor location BeginPlay: %s"), *ImpulseLocation.ToString());
 
-	bool isHit = GetWorld()->SweepMultiByChannel(OutHits, MyLocation, MyLocation, FQuat::Identity, ECC_WorldStatic, MyColSphere);
+	bool isHit = GetWorld()->SweepMultiByChannel(OutHits, ImpulseLocation, ImpulseLocation, FQuat::Identity, ECC_WorldDynamic, MyColSphere);
 
 	if (isHit)
 	{
 		for (auto& Hit : OutHits)
 		{
+			UE_LOG(LogClass, Log, TEXT("Impulse hit component: %s"), *((Hit.GetActor())->GetName()));
+
 			UStaticMeshComponent* MeshComp = Cast<UStaticMeshComponent>((Hit.GetActor())->GetRootComponent());
-			ACharacter* CharComp = Cast<ACharacter>((Hit.GetActor())->GetRootComponent());
-			//UCapsuleComponent* CapsComp = Cast<UCapsuleComponent>((Hit.GetActor())->GetRootComponent());
+			ACharacter* CharComp = Cast<ACharacter>((Hit.GetActor()));
 
 			if (MeshComp)
 			{
-				MeshComp->AddRadialImpulse(MyLocation, 1000.f, 3000.f, ERadialImpulseFalloff::RIF_Constant, true);
+				MeshComp->AddRadialImpulse(ImpulseLocation, 1000.f, 3000.f, ERadialImpulseFalloff::RIF_Constant, true);
 			}
 			
 			if (CharComp)
 			{
-				//CharComp->AddRadialImpulse(MyLocation, 2000.f, 500000.f, ERadialImpulseFalloff::RIF_Constant, true);
-				//CharComp->LaunchCharacter(FVector(0,0, 5000.f), false, true);
+				FVector CharLocation = CharComp->GetActorLocation();
+				FVector LaunchDirection = CharLocation - ImpulseLocation;
+				float mag = 0;
+				LaunchDirection.ToDirectionAndLength(LaunchDirection, mag);
+				LaunchDirection = LaunchDirection * 1000;
+
+				UE_LOG(LogClass, Log, TEXT("Impulse Direction vector: %s"), *(LaunchDirection.ToString()));
+				
+				CharComp->LaunchCharacter(LaunchDirection, false, true);
 			}
 		}
 	}

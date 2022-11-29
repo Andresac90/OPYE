@@ -48,10 +48,11 @@ void AOPYEProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UP
 
 		UE_LOG(LogTemp, Log, TEXT("Projectile location OnHit: %s"), *SpawnLocation.ToString());
 
-		//GetWorld()->SpawnActor<AAddRadialImpulse>(SpawnLocation, SpawnRotation);
-		GetWorld()->SpawnActor<AAddRadialImpulse>(SpawnLocation, SpawnRotation, SpawnInfo);
+		GetWorld()->SpawnActor<AAddRadialImpulse>(SpawnLocation, SpawnRotation);
+		//GetWorld()->SpawnActor<AAddRadialImpulse>(SpawnLocation, SpawnRotation, SpawnInfo);
 
 
 		Destroy();
 	}
+
 }
