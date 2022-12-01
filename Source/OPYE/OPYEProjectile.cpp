@@ -5,6 +5,7 @@
 #include "Components/SphereComponent.h"
 #include "AddRadialImpulse.h"
 #include "GameFramework/Actor.h"
+#include <Kismet/GameplayStatics.h>
 
 AOPYEProjectile::AOPYEProjectile() 
 {
@@ -48,9 +49,13 @@ void AOPYEProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UP
 
 		UE_LOG(LogTemp, Log, TEXT("Projectile location OnHit: %s"), *SpawnLocation.ToString());
 
+		if (HitParticles)
+		{
+			UGameplayStatics::SpawnEmitterAtLocation(this, HitParticles, SpawnLocation, SpawnRotation);
+		}
+
 		GetWorld()->SpawnActor<AAddRadialImpulse>(SpawnLocation, SpawnRotation);
 		//GetWorld()->SpawnActor<AAddRadialImpulse>(SpawnLocation, SpawnRotation, SpawnInfo);
-
 
 		Destroy();
 	}

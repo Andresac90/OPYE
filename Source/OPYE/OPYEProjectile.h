@@ -21,6 +21,10 @@ class AOPYEProjectile : public AActor
 	/** Projectile movement component */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
 	UProjectileMovementComponent* ProjectileMovement;
+private:
+
+	UPROPERTY(EditAnywhere, Category = "Effects")
+		class UParticleSystem* HitParticles;
 
 public:
 	AOPYEProjectile();
