@@ -25,6 +25,11 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Effects")
 		class UParticleSystem* HitParticles;
+
+	UPROPERTY(VisibleAnywhere, Category = "Effects")
+		class UParticleSystemComponent* TrailParticles;
+
+
 	UPROPERTY(EditAnywhere, Category = "Effects")
 		TSubclassOf<class AAddRadialImpulse> RadialImpulseClass;
 

@@ -6,6 +6,7 @@
 #include "AddRadialImpulse.h"
 #include "GameFramework/Actor.h"
 #include <Kismet/GameplayStatics.h>
+#include "Particles/ParticleSystemComponent.h"
 
 AOPYEProjectile::AOPYEProjectile() 
 {
@@ -34,6 +35,10 @@ AOPYEProjectile::AOPYEProjectile()
 
 	// Die after 3 seconds by default
 	InitialLifeSpan = 3.0f;
+
+	TrailParticles = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Smoke Trail"));
+	TrailParticles->SetupAttachment(RootComponent);
+
 }
 
 void AOPYEProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
