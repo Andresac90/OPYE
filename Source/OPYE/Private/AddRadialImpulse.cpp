@@ -24,7 +24,7 @@ void AAddRadialImpulse::BeginPlay()
 	FVector ImpulseLocation = GetActorLocation();
 	FCollisionShape MyColSphere = FCollisionShape::MakeSphere(ImpulseRadius);
 
-	DrawDebugSphere(GetWorld(), ImpulseLocation, MyColSphere.GetSphereRadius(), 50, FColor::Cyan, true);
+	DrawDebugSphere(GetWorld(), ImpulseLocation, MyColSphere.GetSphereRadius(), 50, FColor::Cyan, false, 1.0f);
 
 	UE_LOG(LogTemp, Log, TEXT("AddImpulse Actor location BeginPlay: %s"), *ImpulseLocation.ToString());
 
