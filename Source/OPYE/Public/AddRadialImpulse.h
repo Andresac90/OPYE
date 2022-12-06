@@ -11,16 +11,20 @@ class OPYE_API AAddRadialImpulse : public AActor
 {
 	GENERATED_BODY()
 	
+private:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Radius Properties", meta = (AllowPrivateAccess = "true"))
+		float ImpulseRadius = 250.f;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Radius Properties", meta = (AllowPrivateAccess = "true"))
+		float ImpulseForce = 1000.f;
+
 public:	
 	// Sets default values for this actor's properties
 	AAddRadialImpulse();
 
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
-public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
 };

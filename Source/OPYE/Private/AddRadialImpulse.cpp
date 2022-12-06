@@ -10,7 +10,7 @@
 AAddRadialImpulse::AAddRadialImpulse()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 }
 
@@ -19,12 +19,10 @@ void AAddRadialImpulse::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	float impulseRadius = 250.f;
-	float impulseForce = 1000.f;
 
 	TArray<FHitResult> OutHits;
 	FVector ImpulseLocation = GetActorLocation();
-	FCollisionShape MyColSphere = FCollisionShape::MakeSphere(impulseRadius);
+	FCollisionShape MyColSphere = FCollisionShape::MakeSphere(ImpulseRadius);
 
 	DrawDebugSphere(GetWorld(), ImpulseLocation, MyColSphere.GetSphereRadius(), 50, FColor::Cyan, true);
 
@@ -43,7 +41,7 @@ void AAddRadialImpulse::BeginPlay()
 
 			if (MeshComp)
 			{
-				MeshComp->AddRadialImpulse(ImpulseLocation, impulseRadius, impulseForce, ERadialImpulseFalloff::RIF_Constant, true);
+				MeshComp->AddRadialImpulse(ImpulseLocation, ImpulseRadius, ImpulseForce, ERadialImpulseFalloff::RIF_Constant, true);
 			}
 			
 			if (CharComp)
@@ -54,7 +52,7 @@ void AAddRadialImpulse::BeginPlay()
 				FVector CharLocation = CharComp->GetActorLocation();
 				FVector LaunchDirection = CharLocation - ImpulseLocation;
 				float distance; //Player distance from impulse origin, not used currently.
-				float scale = impulseForce;
+				float scale = ImpulseForce;
 				LaunchDirection.ToDirectionAndLength(LaunchDirection, distance);
 				LaunchDirection = LaunchDirection * scale;
 
